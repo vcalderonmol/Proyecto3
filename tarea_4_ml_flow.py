@@ -77,7 +77,7 @@ print("Media de X_train_scaled:", np.mean(X_train, axis=0))
 print("Media de y_train_scaled:", np.mean(y_train, axis=0))
 
 # REGISTRAR EL EXPERIMENTO
-mlflow.set_tracking_uri('http://0.0.0.0:5000')
+#mlflow.set_tracking_uri('http://0.0.0.0:5000')
 experiment = mlflow.set_experiment("icfes-no-escalado")
 
 """### 4.2 Entrenamiento de un primer modelo de regresión lineal
