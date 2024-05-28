@@ -182,7 +182,7 @@ app.layout = html.Div([
     html.Div(
         style={'backgroundColor': color_azul_personalizado},
         children=[
-            html.H1("Análisis de Datos - Saber 11", style={'textAlign': 'center', 'color': 'black'}),
+            html.H1("Análisis de Datos - Saber 11- Dep_Meta", style={'textAlign': 'center', 'color': 'black'}),
             html.Label("Selecciona una variable:", style={'color': 'black'}),
             dcc.Dropdown(
                 id='variable-dropdown',
