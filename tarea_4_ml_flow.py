@@ -82,7 +82,7 @@ experiment = mlflow.set_experiment("icfes-no-escalado")
 
 """### 4.2 Entrenamiento de un primer modelo de regresión lineal
 """
-with mlflow.start_run(experiment_id=experiment.experiment_id):
+with mlflow.start_run(experiment_id=experiment.experiment_id, run_name="Linear Regression Model Run"):
   # Crear el modelo
   model = LinearRegression()
   # Entrenar el modelo
@@ -102,7 +102,7 @@ with mlflow.start_run(experiment_id=experiment.experiment_id):
   mlflow.sklearn.log_model(model, "model-lineal")
 
 """### 4.3 Entrenamiento de un segundo modelo de regresión lineal (LASSO)"""
-with mlflow.start_run(experiment_id=experiment.experiment_id):
+with mlflow.start_run(experiment_id=experiment.experiment_id, run_name="Lasso Regression Model Run"):
   # Crear el modelo
   model_lasso = Lasso(alpha=0.01)
   # Entrenar el modelo
@@ -131,7 +131,7 @@ for i, feature in enumerate(feature_names):
     selected_features_index.append(i)
 
 """### 4.4 Entrenamiento de un tercer modelo de regresión lineal (BAGGING)"""
-with mlflow.start_run(experiment_id=experiment.experiment_id):
+with mlflow.start_run(experiment_id=experiment.experiment_id, run_name="BAGGING Regression Model Run"):
   # Crear el modelo base (Lasso)
   model = LinearRegression()
   # Crear el modelo Bagging con Lasso como estimador base
@@ -148,6 +148,9 @@ with mlflow.start_run(experiment_id=experiment.experiment_id):
   r2 = bagging_lasso.score(X_test[:, selected_features_index],y_test)
   #Registramos los valores
   mlflow.log_metric("mae", mae)
+  mlflow.log_metric("r2", r2)
+  #Guardar el modelo
+  mlflow.sklearn.log_model(bagging_lasso, "model-bagging")
 
 
 
