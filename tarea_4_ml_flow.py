@@ -38,9 +38,14 @@ data_df_modeling =data_df.copy()
 
 ### 4.1 Particionamiento del conjunto de datos en entrenamiento y prueba
 """
+
 #Separar variables indepnedientes y de interes
 X = data_df_modeling.drop("PUNT_GLOBAL", axis=1)
 Y = data_df_modeling["PUNT_GLOBAL"]
+
+#Normalizar variables númericas: features_numericas
+#features_numericas_wiyhout_y= features_numericas
+
 #Separamos las muestras
 X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.3, random_state=42)
 
@@ -58,6 +63,10 @@ X_train = X_train.to_numpy()
 X_test = X_test.to_numpy()
 y_train = y_train.to_numpy().reshape(-1, 1)
 y_test = y_test.to_numpy().reshape(-1, 1)
+
+#Escalamiento en Y
+#y_train= scaler_y.fit_transform(y_train)
+#y_test = scaler_y.transform(y_test)
 
 #Imprimimos dimensiones
 print("Train shape:  ",X_train.shape, y_train.shape)
@@ -216,9 +225,6 @@ with mlflow.start_run(experiment_id=experiment.experiment_id, run_name="Escalado
   # Desescalar
   y_pred_test = scaler_y.inverse_transform(y_pred_test)
   y_test_original = scaler_y.inverse_transform(y_test)
-  # Reshape
-  y_test_original = y_test_original.reshape(-1, 1)
-  y_pred_test = y_pred_test.reshape(-1, 1)
   # Calcular métricas
   # MAE
   mae = mean_absolute_error(y_test_original, y_pred_test)
@@ -254,58 +260,5 @@ with mlflow.start_run(experiment_id=experiment.experiment_id, run_name="Escalado
   mlflow.log_metric("r2", r2)
   #Guardar el modelo
   mlflow.sklearn.log_model(bagging_lasso, "model-bagging-scaled")
-
-"""## Tarea 4: Una primera versión de Modelo """
-data_df = pd.read_csv("first_clean_data.csv", sep=',')
-data_df.drop(columns=['Unnamed: 0'], inplace=True)
-data_df_modeling =data_df.copy()
-
-"""### 4.1 Particionamiento del conjunto de datos en entrenamiento y prueba"""
-#Separar variables indepnedientes y de interes
-X = data_df_modeling.drop("PUNT_GLOBAL", axis=1)
-Y = data_df_modeling["PUNT_GLOBAL"]
-
-#Separamos las muestras
-X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.3, random_state=42)
-
-#Escalamiento
-# Inicializar el objeto StandardScaler
-scaler_X = StandardScaler()
-scaler_y = StandardScaler()
-
-#Adecuamos a numpy
-X_train = X_train.to_numpy()
-X_test = X_test.to_numpy()
-y_train = y_train.to_numpy().reshape(-1, 1)
-y_test = y_test.to_numpy().reshape(-1, 1)
-
-
-#Imprimimos dimensiones
-print("Train shape:  ",X_train.shape, y_train.shape)
-print("Test shape:  ",X_test.shape, y_test.shape)
-
-#Media y desvest
-print("Media de X_train_scaled:", np.mean(X_train, axis=0))
-print("Media de y_train_scaled:", np.mean(y_train, axis=0))
-
-"""### 4.2 Entrenamiento de un primer modelo de regresión lineal"""
-with mlflow.start_run(experiment_id=experiment.experiment_id, run_name="1st Linear Regression Model Run"):
-  # Crear el modelo
-  model = LinearRegression()
-  # Entrenar el modelo
-  model.fit(X_train, y_train)
-  # Obtener las predicciones para el set Tes
-  y_pred_test = model.predict(X_test)
-  y_test_original = y_test
-  # Calcular métricas
-  # MAE
-  mae = mean_absolute_error(y_test_original, y_pred_test)
-  #R2
-  r2 = model.score(X_test,y_test)
-  #Registramos los valores
-  mlflow.log_metric("mae", mae)
-  mlflow.log_metric("r2", r2)
-  #Guardar el modelo
-  mlflow.sklearn.log_model(model, "1st-model-lineal")
 
 
