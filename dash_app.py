@@ -280,7 +280,6 @@ def update_graphs(selected_variable):
     # Establecer el color azul personalizado en las gráficas
     box_fig.update_layout(plot_bgcolor=color_azul_personalizado, paper_bgcolor=color_azul_personalizado)
     bar_fig.update_layout(plot_bgcolor="White", paper_bgcolor="White")
-    
     return box_fig, bar_fig
 
 
