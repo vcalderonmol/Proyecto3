@@ -9,7 +9,7 @@ import numpy as np
 from scipy.stats import t
 import plotly.graph_objects as go
 
-px.plot
+#px.plot
 
 # Leer el archivo CSV
 data_df = pd.read_csv("descriptive_data.csv")
