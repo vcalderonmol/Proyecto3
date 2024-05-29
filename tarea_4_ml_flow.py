@@ -223,6 +223,8 @@ with mlflow.start_run(experiment_id=experiment.experiment_id, run_name="Escalado
   # Obtener las predicciones para el set Test
   y_pred_test = model_lasso.predict(X_test)
   y_test_original = y_test
+  #reshape
+  y_pred_test = y_pred_test.reshape(-1, 1)
   # Desescalar
   y_pred_test = scaler_y.inverse_transform(y_pred_test)
   y_test_original = scaler_y.inverse_transform(y_test)
