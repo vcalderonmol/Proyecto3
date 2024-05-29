@@ -1,3 +1,4 @@
+
 # -*- coding: utf-8 -*-
 """
 **4. Tarea 4: Modelamiento**
@@ -260,5 +261,3 @@ with mlflow.start_run(experiment_id=experiment.experiment_id, run_name="Escalado
   mlflow.log_metric("r2", r2)
   #Guardar el modelo
   mlflow.sklearn.log_model(bagging_lasso, "model-bagging-scaled")
-
-
