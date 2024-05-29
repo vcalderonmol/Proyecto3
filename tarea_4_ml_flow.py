@@ -213,6 +213,52 @@ with mlflow.start_run(experiment_id=experiment.experiment_id, run_name="Escalado
   #Guardar el modelo
   mlflow.sklearn.log_model(model, "model-lineal-scaled")
 
+"""### 4.3 Entrenamiento de un segundo modelo de regresión lineal (LASSO)"""
+with mlflow.start_run(experiment_id=experiment.experiment_id, run_name="Escalado Lasso Regression Model Run"):
+  # Crear el modelo
+  model_lasso = Lasso(alpha=0.01)
+  # Entrenar el modelo
+  model_lasso.fit(X_train, y_train)
+  # Obtener las predicciones para el set Test
+  y_pred_test = model_lasso.predict(X_test)
+  y_test_original = y_test
+  # Desescalar
+  y_pred_test = scaler_y.inverse_transform(y_pred_test)
+  y_test_original = scaler_y.inverse_transform(y_test)
+  # Calcular métricas
+  # MAE
+  mae = mean_absolute_error(y_test_original, y_pred_test)
+  #R2
+  r2 = model_lasso.score(X_test,y_test)
+  #Registramos los valores
+  mlflow.log_metric("mae", mae)
+  mlflow.log_metric("r2", r2)
+  #Guardar el modelo
+  mlflow.sklearn.log_model(model_lasso, "model-lasso-scaled")
 
+"""### 4.4 Entrenamiento de un tercer modelo de regresión lineal (BAGGING)"""
+with mlflow.start_run(experiment_id=experiment.experiment_id, run_name="Escalado BAGGING Regression Model Run"):
+  # Crear el modelo base (Lasso)
+  model = LinearRegression()
+  # Crear el modelo Bagging con Lasso como estimador base
+  bagging_lasso = BaggingRegressor(model, n_estimators=15, random_state=42)
+  # Entrenar el modelo Bagging
+  bagging_lasso.fit(X_train, y_train)
+  # Obtener las predicciones para el set Test
+  y_pred_test = bagging_lasso.predict(X_test)
+  y_test_original = y_test
+  # Desescalar
+  y_pred_test = scaler_y.inverse_transform(y_pred_test)
+  y_test_original = scaler_y.inverse_transform(y_test)
+  # Calcular métricas
+  # MAE
+  mae = mean_absolute_error(y_test_original, y_pred_test)
+  #R2
+  r2 = bagging_lasso.score(X_test,y_test)
+  #Registramos los valores
+  mlflow.log_metric("mae", mae)
+  mlflow.log_metric("r2", r2)
+  #Guardar el modelo
+  mlflow.sklearn.log_model(bagging_lasso, "model-bagging-scaled")
 
 
