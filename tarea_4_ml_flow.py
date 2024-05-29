@@ -198,8 +198,10 @@ with mlflow.start_run(experiment_id=experiment.experiment_id, run_name="Escalado
   model.fit(X_train, y_train)
   # Obtener las predicciones para el set Tes
   y_pred_test = model.predict(X_test)
-  y_pred_test = scaler_y.inverse_transform(y_pred_test)
   y_test_original = y_test
+  # Desescalar
+  y_pred_test = scaler_y.inverse_transform(y_pred_test)
+  y_test_original = scaler_y.inverse_transform(y_test)
   # Calcular métricas
   # MAE
   mae = mean_absolute_error(y_test_original, y_pred_test)
