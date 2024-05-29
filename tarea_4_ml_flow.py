@@ -155,6 +155,9 @@ with mlflow.start_run(experiment_id=experiment.experiment_id, run_name="BAGGING 
 X = data_df_modeling.drop("PUNT_GLOBAL", axis=1)
 Y = data_df_modeling["PUNT_GLOBAL"]
 
+#Normalizar variables númericas: features_numericas
+#features_numericas_wiyhout_y= features_numericas
+
 #Separamos las muestras
 X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.3, random_state=42)
 
@@ -304,6 +307,6 @@ with mlflow.start_run(experiment_id=experiment.experiment_id, run_name="1st Line
   mlflow.log_metric("mae", mae)
   mlflow.log_metric("r2", r2)
   #Guardar el modelo
-  mlflow.sklearn.log_model(model, "model-lineal-1st")
+  mlflow.sklearn.log_model(model, "1st-model-lineal")
 
 
