@@ -59,10 +59,6 @@ X_test = X_test.to_numpy()
 y_train = y_train.to_numpy().reshape(-1, 1)
 y_test = y_test.to_numpy().reshape(-1, 1)
 
-#Escalamiento en Y
-#y_train= scaler_y.fit_transform(y_train)
-#y_test = scaler_y.transform(y_test)
-
 #Imprimimos dimensiones
 print("Train shape:  ",X_train.shape, y_train.shape)
 print("Test shape:  ",X_test.shape, y_test.shape)
@@ -220,6 +216,9 @@ with mlflow.start_run(experiment_id=experiment.experiment_id, run_name="Escalado
   # Desescalar
   y_pred_test = scaler_y.inverse_transform(y_pred_test)
   y_test_original = scaler_y.inverse_transform(y_test)
+  # Reshape
+  y_test_original = y_test_original.reshape(-1, 1)
+  y_pred_test = y_pred_test.reshape(-1, 1)
   # Calcular métricas
   # MAE
   mae = mean_absolute_error(y_test_original, y_pred_test)
