@@ -25,7 +25,7 @@ pd.set_option("display.max_rows", 50)
 
 """### Carga de datos"""
 
-data_df = pd.read_csv("clean_data.csv", sep=',')
+data_df = pd.read_csv("../docs/clean_data.csv", sep=',')
 data_df.head()
 
 #Quitar variable Unnamed:o
@@ -267,7 +267,7 @@ with mlflow.start_run(experiment_id=experiment.experiment_id, run_name="Escalado
   mlflow.sklearn.log_model(bagging_lasso, "model-bagging-scaled")
 
 """## Tarea 4: Una primera versión de Modelo """
-data_df = pd.read_csv("first_clean_data.csv", sep=',')
+data_df = pd.read_csv("../docs/first_clean_data.csv", sep=',')
 data_df.drop(columns=['Unnamed: 0'], inplace=True)
 data_df_modeling =data_df.copy()
 

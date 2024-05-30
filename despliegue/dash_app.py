@@ -8,11 +8,19 @@ import io
 import numpy as np
 from scipy.stats import t
 import plotly.graph_objects as go
+import dill
 
-#px.plot
+px.plot
 
 # Leer el archivo CSV
-data_df = pd.read_csv("descriptive_data.csv")
+data_df = pd.read_csv("../docs/descriptive_data.csv")
+
+#Cargar modelo
+model = dill.load(open("../despliegue/model.pkl", "rb"))
+#Coeficientes
+coeficientes = model.named_steps["model"].coef_
+# Intercepto del modelo para el Saber 11
+intercepto_saber11 = model.named_steps["model"].intercept_
 
 # Mapear los nombres de los coeficientes a nombres más amigables para el usuario
 nombres_coeficientes = {
@@ -34,32 +42,15 @@ nombres_coeficientes = {
     "FAMI_ESTRATOVIVIENDA_Estrato_6": "Estrato Vivienda: 6"
 }
 
-# Coeficientes del modelo para el Saber 11
-coeficientes_saber11 = {
-    "FAMI_TIENEAUTOMOVIL_Si": 2.6455104558916567,
-    "FAMI_TIENECOMPUTADOR_Si": 7.376463853122136,
-    "FAMI_TIENEINTERNET_Si": 3.9831811268082116,
-    "FAMI_TIENELAVADORA_Si": 2.6413986271667462,
-    "COLE_AREA_UBICACION_URBANO": -3.0611699748047303,
-    "FAMI_EDUCACIONMADRE_no_presenta": -22.38813264553304,
-    "FAMI_EDUCACIONMADRE_basica": -20.381362870257238,
-    "FAMI_EDUCACIONMADRE_media": -13.54344769863283,
-    "FAMI_EDUCACIONPADRE_no_presenta": -14.966785366297767,
-    "FAMI_EDUCACIONPADRE_basica": -17.86398509154922,
-    "FAMI_EDUCACIONPADRE_media": -13.008383875099819,
-    "FAMI_ESTRATOVIVIENDA_Estrato_2": -0.70441715439153,
-    "FAMI_ESTRATOVIVIENDA_Estrato_3": 2.9848453835640014,
-    "FAMI_ESTRATOVIVIENDA_Estrato_4": 5.834299709915722,
-    "FAMI_ESTRATOVIVIENDA_Estrato_5": 12.284528681022799,
-    "FAMI_ESTRATOVIVIENDA_Estrato_6": 14.402787353688034
-}
+#Lista nombre coeficientes
+names_coef = list(nombres_coeficientes.keys())
+#Construccion tupla coeficientes
+coeficientes_saber11 = {}
+for i in range(len(names_coef)):
+    coeficientes_saber11[names_coef[i]] = coeficientes[0][i]
 
 # Ordenar los coeficientes de menor a mayor
 coeficientes_ordenados = sorted(coeficientes_saber11.items(), key=lambda x: x[1])
-# Intercepto del modelo para el Saber 11
-intercepto_saber11 = 270.8199229465451
-# Varianza residual del modelo para el Saber 11 (ejemplo hipotético)
-varianza_residual = 100
 # Crear una lista para almacenar los divs generados dinámicamente
 divs = []
 # Iterar sobre los valores de la serie datos_description
